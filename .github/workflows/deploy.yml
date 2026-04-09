@@ -1,8 +1,8 @@
 name: Deploy
 on:
   push:
-    branches: [ main ]
-  workflow_dispatch:
+    branches: [ main ] # Se ejecuta cuando subes algo a main
+  workflow_dispatch:   # Esto permite ejecutarlo a mano con un botón
 
 jobs:
   deploy:
@@ -17,7 +17,7 @@ jobs:
           distribution: 'temurin'
 
       - name: Build with Maven
-        run: ./mvnw clean package -DskipTests
+        run: mvn clean package -DskipTests
 
       - name: Install SSH Key
         uses: shimataro/ssh-key-action@v2
@@ -30,6 +30,6 @@ jobs:
 
       - name: Deploy and Start Application
         run: |
-          scp target/*.jar pm161@${{ secrets.SSH_HOST }}:~/app.jar
-          ssh pm161@${{ secrets.SSH_HOST }} "fuser -k 8080/tcp || true"
-          ssh pm161@${{ secrets.SSH_HOST }} "nohup java -jar ~/app.jar > log.txt 2>&1 &"
+          scp target/*.jar ubuntu@${{ secrets.SSH_HOST }}:~/app.jar
+          ssh ubuntu@${{ secrets.SSH_HOST }} "fuser -k 8080/tcp || true" 
+          ssh ubuntu@${{ secrets.SSH_HOST }} "nohup java -jar ~/app.jar > log.txt 2>&1 &"
