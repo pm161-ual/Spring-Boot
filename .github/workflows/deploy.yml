@@ -30,6 +30,6 @@ jobs:
 
       - name: Deploy and Start Application
         run: |
-          scp target/*.jar ubuntu@${{ secrets.SSH_HOST }}:~/app.jar
-          ssh ubuntu@${{ secrets.SSH_HOST }} "fuser -k 8080/tcp || true" 
-          ssh ubuntu@${{ secrets.SSH_HOST }} "nohup java -jar ~/app.jar > log.txt 2>&1 &"
+          scp target/*.jar pm161@${{ secrets.SSH_HOST }}:~/app.jar
+          ssh pm161@${{ secrets.SSH_HOST }} "fuser -k 8080/tcp || true" 
+          ssh pm161@${{ secrets.SSH_HOST }} "nohup java -jar ~/app.jar > log.txt 2>&1 &"
